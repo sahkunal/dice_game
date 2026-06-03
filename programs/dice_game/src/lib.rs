@@ -30,12 +30,24 @@ pub mod dice_game {
         ctx.accounts.deposit(amount)
     }
 
-    pub fn resolve_bet(ctx: Context<ResolveBet>, sig: Vec<u8>) -> Result<()> {
-        ctx.accounts.verify_ed25519_signature(&sig)?;
-        ctx.accounts.resolve_bet(&ctx.bumps, &sig)
-    }
+   pub fn resolve_bet(
+    ctx: Context<ResolveBet>,
+) -> Result<()> {
+    let roll = ctx.accounts.verify_roll_proof()?;
 
+    ctx.accounts.resolve_bet(
+        &ctx.bumps,
+        roll,
+    )
+}
     pub fn refund_bet(ctx: Context<RefundBet>) -> Result<()> {
         ctx.accounts.refund_bet(&ctx.bumps)
     }
+
+    pub fn submit_roll(
+    ctx: Context<SubmitRoll>,
+    proof: RollProof,
+) -> Result<()> {
+    instructions::submit_roll::submit_roll(ctx, proof)
+}
 }

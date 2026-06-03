@@ -2,6 +2,8 @@ use anchor_lang::prelude::*;
 
 #[account]
 #[derive(InitSpace)]
+
+
 pub struct Bet {
     pub player: Pubkey,
     pub seed: u128,
@@ -22,4 +24,10 @@ impl Bet {
 
         slice
     }
+}
+#[derive(AnchorSerialize, AnchorDeserialize)]
+
+pub struct RollProof {
+    pub roll: u8,
+    pub nonce: u64,
 }
